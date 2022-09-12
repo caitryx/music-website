@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-music_server_sanic/settings/prod.py
+music_server_sanic/settings/product.py
 
 # C extensions
 *.so
