@@ -15,4 +15,5 @@ try:
     st = __import__('settings.secret', fromlist=('secret',))
     app.update_config(st.SecretSetting)
 except ModuleNotFoundError:
-    raise Exception('由于secret模块不存在，所以必须完善settings.base下的配置信息')
+    # raise Exception('由于secret模块不存在，所以必须完善settings.base下的配置信息')
+    pass
