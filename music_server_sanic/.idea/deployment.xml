@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="mno@192.168.146.128:22 (1)" createEmptyFolders="true" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" autoUpload="Always" serverName="mno@192.168.146.128:22 (1)" createEmptyFolders="true" autoUploadExternalChanges="true" showExcludedInSync="true">
     <serverData>
       <paths name="mno@192.168.146.128:22">
         <serverdata>
