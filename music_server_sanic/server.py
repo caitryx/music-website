@@ -12,6 +12,7 @@ from sanic_cors import CORS
 from tortoise.contrib.sanic import register_tortoise
 
 from settings.base import BaseSetting
+from views import bp_group
 
 
 app = Sanic('yin_music', config=BaseSetting())
@@ -28,3 +29,6 @@ register_tortoise(app, config=app.config.DB_CONFIG)
 
 # 设置跨域
 Extend(app, extensions=[CORS], config={'CORS': False, 'CORS_OPTIONS': app.config.CORS_OPTIONS})
+
+# 注册蓝图
+app.blueprint(bp_group)

@@ -18,12 +18,12 @@ class Consumer(Model):
     sex = fields.BooleanField(null=True, )
     phone_num = fields.CharField(unique=True, max_length=15, null=True, )
     email = fields.CharField(unique=True, max_length=50, null=True, )
-    birth = fields.DatetimeField(null=True, )
+    birth = fields.DateField(null=True, )
     introduction = fields.CharField(max_length=255, null=True, )
     location = fields.CharField(max_length=45, null=True, )
     avator = fields.CharField(max_length=255, null=True, )
-    create_time = fields.DatetimeField()
-    update_time = fields.DatetimeField()
+    create_time = fields.DatetimeField(auto_now_add=True)
+    update_time = fields.DatetimeField(auto_now=True)
 
     class Meta:
         table = "consumer"

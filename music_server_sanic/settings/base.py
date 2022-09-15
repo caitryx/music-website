@@ -12,28 +12,6 @@ class BaseSetting(Config):
     # 跨域配置信息
     CORS_OPTIONS = {
         "resources": r'/*',
-        "origins": "*",
+        "origins": ['http://localhost:9001'],
         "methods": ["GET", "POST", "HEAD", "OPTIONS", "PUT", "DELETE"]
     }
-
-
-
-    # 数据库配置信息(tortoise)
-    # DB_CONFIG = {
-    #     'connections': {
-    #         'default': {
-    #             'engine': 'tortoise.backends.mysql',
-    #             'credentials': {
-    #                 'host': '127.0.0.1',
-    #                 'port': '33065',
-    #                 'user': 'root',
-    #                 'password': '123456',
-    #                 'database': 'tp_music',
-    #             }
-    #         }
-    #     },
-    #     'apps': {
-    #
-    #     }
-    #
-    # }
