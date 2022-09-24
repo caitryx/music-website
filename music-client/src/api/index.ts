@@ -13,6 +13,8 @@ const HttpManager = {
   // 更新用户信息
   updateUserMsg: (params) => post(`user/update`, params),
   updateUserPassword: (params) => post(`user/updatePassword`, params),
+  // 获取当前用户详细信息
+  getUserInfo: () => get('user/info'),
   // 返回指定ID的用户
   getUserOfId: (id) => get(`user/detail?id=${id}`),
   // 更新用户头像

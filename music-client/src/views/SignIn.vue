@@ -1,3 +1,9 @@
+<!--
+ * @Author: Mxu
+ * @Date: 2022-09-12 09:52:27
+ * @LastEditTime: 2022-09-24 10:32:44
+ * @Description: 
+-->
 <template>
   <yin-login-logo></yin-login-logo>
   <div class="sign">
@@ -62,7 +68,7 @@ export default defineComponent({
           proxy.$store.commit("setUserId", result.data[0].id);
           proxy.$store.commit("setUsername", result.data[0].username);
           proxy.$store.commit("setUserPic", result.data[0].avator);
-          proxy.$store.commit("setToken", true);
+          proxy.$store.commit("setToken", result['access_token']);
           changeIndex(NavName.Home);
           routerManager(RouterName.Home, { path: RouterName.Home });
         }

@@ -56,7 +56,9 @@ export default defineComponent({
       routerManager(RouterName.Setting, { path: RouterName.Setting });
     }
     async function getUserInfo(id) {
-      const result = (await HttpManager.getUserOfId(id)) as ResponseBody;
+      // const result = (await HttpManager.getUserOfId(id)) as ResponseBody;
+      // 获取当前用户详细信息
+      const result = (await HttpManager.getUserInfo()) as ResponseBody
       personalInfo.username = result.data[0].username;
       personalInfo.userSex = result.data[0].sex;
       personalInfo.birth = result.data[0].birth;
