@@ -5,14 +5,16 @@
 version: python 3.9.2
 description: 
 """
-import sanic.response
 from sanic import Sanic
 from sanic_ext import Extend
 from sanic_cors import CORS
 from tortoise.contrib.sanic import register_tortoise
+from sanic_jwt import Initialize
 
 from settings.base import BaseSetting
 from views import bp_group
+from models.user import Consumer
+from views.user import UserLoginHandler
 
 
 app = Sanic('yin_music', config=BaseSetting())
@@ -27,8 +29,15 @@ except ModuleNotFoundError:
 # 注册tortoise
 register_tortoise(app, config=app.config.DB_CONFIG)
 
+# 设置jwt
+Initialize(app, authenticate=Consumer.authenticate, url_prefix='/user', class_views=[
+    ('/login/status', UserLoginHandler)
+])
+
 # 设置跨域
 Extend(app, extensions=[CORS], config={'CORS': False, 'CORS_OPTIONS': app.config.CORS_OPTIONS})
+
+
 
 # 注册蓝图
 app.blueprint(bp_group)

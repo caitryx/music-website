@@ -6,6 +6,7 @@ version: python 3.9.2
 description: 
 """
 from tortoise import Model, fields
+from sanic_jwt.exceptions import AuthenticationFailed
 
 
 class Consumer(Model):
@@ -27,6 +28,40 @@ class Consumer(Model):
 
     class Meta:
         table = "consumer"
+
+    def check_password(self, password):
+        """
+            检查当前用户对象与传入的密码是否相同
+            TODO: 后期需要比对加密的密码
+        :param password:
+        :return:
+        """
+        return self.password == password
+
+    def to_dict(self):
+        """
+            jwt模块会根据返回的内容决定jwt中加密什么内容(user_id是固定写法)
+        :return:
+        """
+        return {"user_id": self.id}
+
+    @staticmethod
+    async def authenticate(request, *args, **kwargs):
+        """
+            验证方法(用于jwt认证)
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        username = request.form.get('username')
+        password = request.form.get('password')
+        if not username or not password:
+            raise AuthenticationFailed('用户名或密码不正确')
+        user = await Consumer.filter(username=username).first()
+        if not user or not user.check_password(password):
+            raise AuthenticationFailed('用户名或密码不正确')
+        return user
 
 
 class Admin(Model):
