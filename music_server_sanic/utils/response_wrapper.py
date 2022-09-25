@@ -24,14 +24,15 @@ def success_wrapper(data=None, message='成功', code=200):
     }
 
 
-def warning_wrapper(message='警告'):
+def warning_wrapper(message='警告', code=400):
     """
         包装出现异常时返回的警告信息
     :param message:
+    :param code:
     :return:
     """
     return {
-        'code': 400,
+        'code': code,
         'data': None,
         'success': False,
         'message': message,

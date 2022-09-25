@@ -7,11 +7,10 @@ description:
 """
 from sanic import Blueprint
 
-from .user import bp_user, UserInfoView, UserLoginHandler
+from .user import bp_user, UserInfoView
 
 # user路由
-bp_user.add_route(UserInfoView.register, uri='/add', methods=['POST'])
-# bp_user.add_route(UserLoginHandler.as_view(), uri='/login/status')
+bp_user.add_route(UserInfoView.as_view(), uri='/')
 
 
 # 蓝图组

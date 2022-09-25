@@ -6,7 +6,7 @@ version: python 3.9.2
 description: 
 """
 from tortoise import Model, fields
-from sanic_jwt.exceptions import AuthenticationFailed
+# from sanic_jwt.exceptions import AuthenticationFailed
 
 
 class Consumer(Model):
@@ -45,23 +45,23 @@ class Consumer(Model):
         """
         return {"user_id": self.id}
 
-    @staticmethod
-    async def authenticate(request, *args, **kwargs):
-        """
-            验证方法(用于jwt认证)
-        :param request:
-        :param args:
-        :param kwargs:
-        :return:
-        """
-        username = request.form.get('username')
-        password = request.form.get('password')
-        if not username or not password:
-            raise AuthenticationFailed('用户名或密码不正确')
-        user = await Consumer.filter(username=username).first()
-        if not user or not user.check_password(password):
-            raise AuthenticationFailed('用户名或密码不正确')
-        return user
+    # @staticmethod
+    # async def authenticate(request, *args, **kwargs):
+    #     """
+    #         验证方法(用于jwt认证)
+    #     :param request:
+    #     :param args:
+    #     :param kwargs:
+    #     :return:
+    #     """
+    #     username = request.form.get('username')
+    #     password = request.form.get('password')
+    #     if not username or not password:
+    #         raise AuthenticationFailed('用户名或密码不正确')
+    #     user = await Consumer.filter(username=username).first()
+    #     if not user or not user.check_password(password):
+    #         raise AuthenticationFailed('用户名或密码不正确')
+    #     return user
 
 
 class Admin(Model):

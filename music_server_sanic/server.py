@@ -9,12 +9,13 @@ from sanic import Sanic
 from sanic_ext import Extend
 from sanic_cors import CORS
 from tortoise.contrib.sanic import register_tortoise
-from sanic_jwt import Initialize
 
 from settings.base import BaseSetting
+from utils.jwt.jwt_process import jwt_initialize
 from views import bp_group
+from utils.jwt.views import bp_jwt
 from models.user import Consumer
-from views.user import UserLoginHandler
+# from views.user import UserLoginHandler
 
 
 app = Sanic('yin_music', config=BaseSetting())
@@ -30,13 +31,12 @@ except ModuleNotFoundError:
 register_tortoise(app, config=app.config.DB_CONFIG)
 
 # 设置jwt
-Initialize(app, authenticate=Consumer.authenticate, url_prefix='/user', class_views=[
-    ('/login/status', UserLoginHandler)
-])
+jwt_initialize(app)
+# 注册jwt蓝图
+app.blueprint(bp_jwt)
 
 # 设置跨域
 Extend(app, extensions=[CORS], config={'CORS': False, 'CORS_OPTIONS': app.config.CORS_OPTIONS})
-
 
 
 # 注册蓝图
