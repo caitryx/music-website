@@ -9,10 +9,10 @@ from sanic import Blueprint
 from sanic.views import HTTPMethodView
 from sanic.response import json, text
 from webargs_sanic.sanicparser import use_args
-from tortoise.exceptions import IntegrityError
+from tortoise.exceptions import IntegrityError, OperationalError
 from sanic_jwt_extended.decorators import jwt_required
 
-from validator.user import UseRegisterSchema, UserDetailSchema
+from validator.user import UseRegisterSchema, UserDetailSchema, UserResetPasswordSchema
 from models.user import Consumer
 from utils.response_wrapper import success_wrapper, warning_wrapper
 
@@ -133,8 +133,29 @@ class UserInfoView(HTTPMethodView):
         :return:
         """
         user_id = token.sub['user_id']
-        user = await Consumer.filter(id=user_id).update(**args)
+        user = await Consumer.filter(id=user_id).update(**args)  # 返回更新数量
         if not user:
             return json(warning_wrapper('修改信息失败'))
+        return json(success_wrapper(message='修改信息成功'))
+
+    @jwt_required()
+    @use_args(UserResetPasswordSchema(), location='form')
+    async def patch(self, request, args, token):
+        """
+            修改用户密码
+        :param request:
+        :param args:
+        :param token:
+        :return:
+        """
+        user_id = token.sub['user_id']
+        try:
+            user = await Consumer.filter(id=user_id, password=args['old_password']).update(password=args['password'])
+        except OperationalError:
+            return json(warning_wrapper('修改失败!'))
+        except Exception:
+            return json(warning_wrapper('修改失败'))
+        if not user:
+            return json(warning_wrapper('密码不正确!'))
         return json(success_wrapper(message='修改信息成功'))
 

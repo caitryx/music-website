@@ -39,7 +39,6 @@ class UserDetailSchema(Schema):
         additional = ['email', 'introduction', 'location']
 
 
-
 class UseRegisterSchema(Schema):
     """
         目前用于用户注册参数验证
@@ -52,3 +51,14 @@ class UseRegisterSchema(Schema):
     birth = fields.Date(required=True)
     introduction = fields.Str()
     location = fields.Str()
+
+
+class UserResetPasswordSchema(Schema):
+    """
+        修改密码参数参政
+    """
+    old_password = fields.Str(required=True)
+    password = fields.Str(required=True)
+
+    class Meta:
+        unknown = EXCLUDE

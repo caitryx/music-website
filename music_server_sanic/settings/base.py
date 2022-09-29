@@ -13,5 +13,5 @@ class BaseSetting(Config):
     CORS_OPTIONS = {
         "resources": r'/*',
         "origins": ['http://localhost:9001', 'http://localhost:8080'],
-        "methods": ["GET", "POST", "HEAD", "OPTIONS", "PUT", "DELETE"]
+        "methods": ["GET", "POST", "HEAD", "OPTIONS", "PUT", "DELETE", "PATCH"]
     }
