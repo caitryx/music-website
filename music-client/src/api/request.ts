@@ -1,11 +1,16 @@
+/**
+ * 清空vuex数据可以参考这里https://cloud.tencent.com/developer/article/1979418
+ */
+
 import axios from "axios";
 import router from "@/router";
 import store from '@/store'
+import { resetStore } from '@/store'
 
 
 const BASE_URL = process.env.NODE_HOST;
 // 获取token
-const token = store.getters.token
+
 
 axios.defaults.timeout = 5000; // 超时时间设置
 // axios.defaults.withCredentials = true; // true允许跨域
@@ -15,6 +20,7 @@ axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded
 
 // 请求拦截器
 axios.interceptors.request.use(config => {
+  const token = store.getters.token
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
@@ -40,6 +46,8 @@ axios.interceptors.response.use(
       switch (error.response.status) {
         // 401: 未登录
         case 401:
+          // 清除失效token及用户信息
+          resetStore()
           router.replace({
             path: "/",
             query: {

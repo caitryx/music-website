@@ -62,7 +62,7 @@ export default defineComponent({
     const userId = computed(() => store.getters.userId);
 
     async function getUserInfo(id) {
-      const result = (await HttpManager.getUserOfId(id)) as ResponseBody;
+      const result = (await HttpManager.getUserInfo()) as ResponseBody;
       registerForm.username = result.data[0].username;
       registerForm.sex = result.data[0].sex;
       registerForm.phoneNum = result.data[0].phoneNum;
@@ -81,10 +81,10 @@ export default defineComponent({
       if (!canRun) return;
 
       const params = new URLSearchParams();
-      params.append("id", userId.value);
+      // params.append("id", userId.value);
       params.append("username", registerForm.username);
       params.append("sex", registerForm.sex);
-      params.append("phone_num", registerForm.phoneNum);
+      params.append("phoneNum", registerForm.phoneNum);
       params.append("email", registerForm.email);
       params.append("birth", getBirth(registerForm.birth));
       params.append("introduction", registerForm.introduction);
