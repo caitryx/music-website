@@ -1,3 +1,9 @@
+<!--
+ * @Author: Mxu
+ * @Date: 2022-09-12 09:52:27
+ * @LastEditTime: 2022-09-29 11:08:42
+ * @Description: 
+-->
 <template>
   <el-form ref="passwordForm" label-width="70px" :model="form" :rules="rules">
     <el-form-item label="旧密码" prop="oldPassword">
@@ -72,6 +78,7 @@ export default defineComponent({
       params.append("password", form.newPassword);
 
       const result = (await HttpManager.updateUserPassword(params)) as ResponseBody;
+      
       (proxy as any).$message({
         message: result.message,
         type: result.type,

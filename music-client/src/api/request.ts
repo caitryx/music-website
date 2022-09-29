@@ -141,3 +141,12 @@ export function put(url, data = {}) {
     );
   });
 }
+
+export function patch(url, data = {}) {
+  return new Promise((resolve, reject) => {
+    axios.patch(url, data).then(
+      (response) => resolve(response.data),
+      (error) => reject(error)
+    )
+  })
+}

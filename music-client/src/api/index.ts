@@ -1,10 +1,10 @@
 /*
  * @Author: Mxu
  * @Date: 2022-09-12 09:52:27
- * @LastEditTime: 2022-09-29 09:11:17
+ * @LastEditTime: 2022-09-29 11:12:26
  * @Description: 
  */
-import { getBaseURL, get, post, deletes, put } from "./request";
+import { getBaseURL, get, post, deletes, put, patch } from "./request";
 
 const HttpManager = {
   // 获取图片信息
@@ -18,7 +18,7 @@ const HttpManager = {
   deleteUser: (id) => get(`user/delete?id=${id}`),
   // 更新用户信息
   updateUserMsg: (params) => put(`user/`, params),
-  updateUserPassword: (params) => post(`user/updatePassword`, params),
+  updateUserPassword: (params) => patch(`user/`, params),
   // 获取当前用户详细信息
   getUserInfo: () => get('user/'),
   // 返回指定ID的用户
