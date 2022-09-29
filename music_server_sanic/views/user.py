@@ -77,7 +77,7 @@ bp_user = Blueprint('user', url_prefix='/user')
 #
 #     async def do_output(self, output, user):
 #         """
-#             处理想用内容
+#             处理响应内容
 #         :param output:
 #         :param user:
 #         :return:
@@ -107,11 +107,10 @@ class UserInfoView(HTTPMethodView):
         data = UserDetailSchema().dump(user)
         return json(success_wrapper([data], ''))
 
-    # @staticmethod
     @use_args(UseRegisterSchema(), location='form')
     async def post(self, request, args):
         """
-            用于注册
+            用户注册
             TODO: 后期可以将验证用户名是否已经存在单独做成一个接口，使得前端在未进行表单提交前就可以知道用户名是否已经被注册
         :param request:
         :param args:
@@ -122,3 +121,20 @@ class UserInfoView(HTTPMethodView):
         except IntegrityError as e:
             return json(warning_wrapper('注册信息重复，一个手机号、邮箱、用户名都只能对应一个用户!'))
         return json(success_wrapper(None, '注册成功'))
+
+    @jwt_required()
+    @use_args(UserDetailSchema(), location='form')
+    async def put(self, request, args, token):
+        """
+            修改用户信息
+        :param request: sanic request
+        :param args: webargs validated data
+        :param token: jwt token
+        :return:
+        """
+        user_id = token.sub['user_id']
+        user = await Consumer.filter(id=user_id).update(**args)
+        if not user:
+            return json(warning_wrapper('修改信息失败'))
+        return json(success_wrapper(message='修改信息成功'))
+

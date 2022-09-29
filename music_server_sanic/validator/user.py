@@ -6,7 +6,7 @@ version: python 3.9.2
 description: 
 """
 from webargs import fields
-from marshmallow import Schema, validate
+from marshmallow import Schema, validate, EXCLUDE
 
 from .fields import Mobile
 
@@ -25,12 +25,19 @@ class UserInfoSchema(Schema):
 
 class UserDetailSchema(Schema):
     """
-        用户查询用户详细信息
+        用户详细信息
     """
-    phoneNum = fields.Str(dump_only=True, attribute='phone_num')
+    id = fields.Int(dump_only=True)
+    username = fields.Str(required=True)
+    birth = fields.Date(required=True)
+    phoneNum = fields.Str(attribute='phone_num')
+    sex = fields.Int()
+    avator = fields.Str(dump_only=True)
 
     class Meta:
-        additional = ['id', 'username', 'sex', 'email', 'birth', 'introduction', 'location', 'avator', ]
+        unknown = EXCLUDE
+        additional = ['email', 'introduction', 'location']
+
 
 
 class UseRegisterSchema(Schema):

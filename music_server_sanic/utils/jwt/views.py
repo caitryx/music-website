@@ -18,7 +18,7 @@ from utils.response_wrapper import success_wrapper, warning_wrapper
 @use_args(UserInfoSchema(), location='form')
 async def login(request, args):
     """
-        登录获取jwt token(后期需要对其进行权限、refresh token以及封禁的处理)
+        登录获取jwt token(后期需要对其进行权限、refresh token以及封禁的处理，可以参考sanic-jwt的实现)
     :param request:
     :return:
     """
