@@ -12,6 +12,6 @@ class BaseSetting(Config):
     # 跨域配置信息
     CORS_OPTIONS = {
         "resources": r'/*',
-        "origins": ['http://localhost:9001', 'http://localhost:8080'],
+        "origins": ['http://localhost:9001', 'http://localhost'],
         "methods": ["GET", "POST", "HEAD", "OPTIONS", "PUT", "DELETE", "PATCH"]
     }

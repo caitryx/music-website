@@ -149,13 +149,8 @@ class UserInfoView(HTTPMethodView):
         :return:
         """
         user_id = token.sub['user_id']
-        try:
-            user = await Consumer.filter(id=user_id, password=args['old_password']).update(password=args['password'])
-        except OperationalError:
-            return json(warning_wrapper('修改失败!'))
-        except Exception:
-            return json(warning_wrapper('修改失败'))
+        user = await Consumer.filter(id=user_id, password=args['old_password']).update(password=args['password'])
         if not user:
             return json(warning_wrapper('密码不正确!'))
-        return json(success_wrapper(message='修改信息成功'))
+        return json(success_wrapper(message='修改密码成功'))
 
