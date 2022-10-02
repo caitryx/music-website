@@ -1,3 +1,9 @@
+/*
+ * @Author: Mxu
+ * @Date: 2022-09-12 09:52:27
+ * @LastEditTime: 2022-10-01 11:56:31
+ * @Description: 
+ */
 /* eslint-disable */
 declare module "*.vue" {
   import type { DefineComponent } from "vue";
@@ -20,4 +26,14 @@ interface ResponseBody {
   message: string;
   type: string;
   data?: any;
+
+}
+
+interface PaginationResponseBody {
+  code: string;
+  success: boolean;
+  message: string;
+  type: string;
+  data?: any;
+  count: number
 }

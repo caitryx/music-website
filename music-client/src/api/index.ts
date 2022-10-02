@@ -1,14 +1,17 @@
 /*
  * @Author: Mxu
  * @Date: 2022-09-12 09:52:27
- * @LastEditTime: 2022-09-29 11:12:26
+ * @LastEditTime: 2022-10-01 11:12:56
  * @Description: 
  */
 import { getBaseURL, get, post, deletes, put, patch } from "./request";
 
 const HttpManager = {
-  // 获取图片信息
-  attachImageUrl: (url) => url ? `${getBaseURL()}/${url}` : "https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png",
+  // 获取图片信息(前端负责拼接url)
+  // attachImageUrl: (url) => url ? `${getBaseURL()}/${url}` : "https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png",
+  // 获取图片信息(由后端进行拼接url，前端无需操作)
+  attachImageUrl: (url) => url ? url : "https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png",
+
   // =======================> 用户 API
   // 登录
   signIn: (params) => post(`auth/login`, params),
@@ -28,7 +31,7 @@ const HttpManager = {
 
   // =======================> 歌单 API
   // 获取全部歌单
-  getSongList: () => get("songList"),
+  getSongList: (params={}) => get("songList", params),
   // 获取歌单类型
   getSongListOfStyle: (style) => get(`songList/style/detail?style=${style}`),
   // 返回标题包含文字的歌单

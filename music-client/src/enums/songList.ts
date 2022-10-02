@@ -1,3 +1,9 @@
+/*
+ * @Author: Mxu
+ * @Date: 2022-09-12 09:52:27
+ * @LastEditTime: 2022-10-02 08:51:45
+ * @Description: 
+ */
 export const SONGSTYLE = [
   {
     name: "全部歌单",
@@ -32,3 +38,10 @@ export const SONGSTYLE = [
     type: "Eight",
   },
 ];
+
+
+// 首页获取数据时，一次所能够获取到的最大数量
+export const PAGELIMIT_HOME = 10
+
+// 歌单、歌手页获取数据时，一次所能够获取到的最大数量
+export const PAGELIMIT_INFO = 15

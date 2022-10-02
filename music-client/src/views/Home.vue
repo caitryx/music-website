@@ -1,3 +1,9 @@
+<!--
+ * @Author: Mxu
+ * @Date: 2022-09-12 09:52:27
+ * @LastEditTime: 2022-10-01 10:47:16
+ * @Description: 
+-->
 <template>
   <!--轮播图-->
   <el-carousel class="swiper-container" type="card" height="20vw" :interval="4000">
@@ -29,6 +35,7 @@ try {
   HttpManager.getAllSinger().then((res) => {
     singerList.value = (res as ResponseBody).data.sort().slice(0, 10);
   });
+  console.log(songList)
 
   onMounted(() => {
     changeIndex(NavName.Home);

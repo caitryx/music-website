@@ -1,3 +1,9 @@
+<!--
+ * @Author: Mxu
+ * @Date: 2022-09-12 09:52:27
+ * @LastEditTime: 2022-10-02 09:23:33
+ * @Description: 
+-->
 <template>
   <div class="play-list-container">
     <yin-nav :styleList="songStyle" :activeName="activeName" @click="handleChangeView"></yin-nav>
@@ -8,7 +14,7 @@
       layout="total, prev, pager, next"
       :current-page="currentPage"
       :page-size="pageSize"
-      :total="allPlayList.length"
+      :total="songlistTotalCount"
       @current-change="handleCurrentChange"
     >
     </el-pagination>
@@ -19,7 +25,7 @@
 import { defineComponent, ref, computed } from "vue";
 import YinNav from "@/components/layouts/YinNav.vue";
 import PlayList from "@/components/PlayList.vue";
-import { SONGSTYLE } from "@/enums";
+import { SONGSTYLE, PAGELIMIT_INFO } from "@/enums";
 import { HttpManager } from "@/api";
 
 export default defineComponent({
@@ -29,16 +35,19 @@ export default defineComponent({
   },
   setup() {
     const activeName = ref("全部歌单");
-    const pageSize = ref(15); // 页数
-    const currentPage = ref(1); // 当前页
+    const pageSize = ref(PAGELIMIT_INFO); // 一页的数量
+    const currentPage = ref(0); // 当前页
     const songStyle = ref(SONGSTYLE); // 歌单导航栏类别
     const allPlayList = ref([]); // 歌单
-    const data = computed(() => allPlayList.value.slice((currentPage.value - 1) * pageSize.value, currentPage.value * pageSize.value));
+    // const data = computed(() => allPlayList.value.slice((currentPage.value - 1) * pageSize.value, currentPage.value * pageSize.value));
+    const data = computed(() => allPlayList.value)
+    const songlistTotalCount = ref(0)
 
-    // 获取全部歌单
+    // 获取歌单数据
     async function getSongList() {
-      allPlayList.value = ((await HttpManager.getSongList()) as ResponseBody).data;
-      currentPage.value = 1;
+      const resp = ((await HttpManager.getSongList({offset: (currentPage.value-1)*pageSize.value, limit: pageSize.value})) as PaginationResponseBody)
+      allPlayList.value = resp.data;
+      songlistTotalCount.value = resp.count
     }
     // 通过类别获取歌单
     async function getSongListOfStyle(style) {
@@ -47,6 +56,7 @@ export default defineComponent({
     }
 
     try {
+      currentPage.value += 1
       getSongList();
     } catch (error) {
       console.error(error);
@@ -67,8 +77,9 @@ export default defineComponent({
       }
     }
     // 获取当前页
-    function handleCurrentChange(val) {
+    async function handleCurrentChange(val) {
       currentPage.value = val;
+      await getSongList()
     }
     return {
       activeName,
@@ -77,6 +88,7 @@ export default defineComponent({
       currentPage,
       allPlayList,
       data,
+      songlistTotalCount,
       handleChangeView,
       handleCurrentChange,
     };

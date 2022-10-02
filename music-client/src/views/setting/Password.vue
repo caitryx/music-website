@@ -78,7 +78,6 @@ export default defineComponent({
       params.append("password", form.newPassword);
 
       const result = (await HttpManager.updateUserPassword(params)) as ResponseBody;
-      
       (proxy as any).$message({
         message: result.message,
         type: result.type,
