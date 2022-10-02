@@ -10,5 +10,5 @@ from marshmallow import Schema, validate
 
 
 class PaginationSchema(Schema):
-    offset = fields.Int(load_default=0)
-    limit = fields.Int(load_default=10, validate=[validate.Range(min=10, max=60)])
+    offset = fields.Int(load_default=0, validate=[validate.Range(min=0)])
+    limit = fields.Int(load_default=10, validate=[validate.Range(min=10, max=30)])
