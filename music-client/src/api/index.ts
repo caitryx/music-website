@@ -1,7 +1,7 @@
 /*
  * @Author: Mxu
  * @Date: 2022-09-12 09:52:27
- * @LastEditTime: 2022-10-01 11:12:56
+ * @LastEditTime: 2022-10-02 09:53:23
  * @Description: 
  */
 import { getBaseURL, get, post, deletes, put, patch } from "./request";
@@ -33,7 +33,7 @@ const HttpManager = {
   // 获取全部歌单
   getSongList: (params={}) => get("songList", params),
   // 获取歌单类型
-  getSongListOfStyle: (style) => get(`songList/style/detail?style=${style}`),
+  getSongListOfStyle: (params) => get(`songList/style/detail`, params),
   // 返回标题包含文字的歌单
   getSongListOfLikeTitle: (keywords) => get(`songList/likeTitle/detail?title=${keywords}`),
   // 返回歌单里指定歌单ID的歌曲

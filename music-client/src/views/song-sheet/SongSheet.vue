@@ -1,7 +1,7 @@
 <!--
  * @Author: Mxu
  * @Date: 2022-09-12 09:52:27
- * @LastEditTime: 2022-10-02 09:23:33
+ * @LastEditTime: 2022-10-02 09:59:12
  * @Description: 
 -->
 <template>
@@ -36,7 +36,7 @@ export default defineComponent({
   setup() {
     const activeName = ref("全部歌单");
     const pageSize = ref(PAGELIMIT_INFO); // 一页的数量
-    const currentPage = ref(0); // 当前页
+    const currentPage = ref(1); // 当前页
     const songStyle = ref(SONGSTYLE); // 歌单导航栏类别
     const allPlayList = ref([]); // 歌单
     // const data = computed(() => allPlayList.value.slice((currentPage.value - 1) * pageSize.value, currentPage.value * pageSize.value));
@@ -51,12 +51,13 @@ export default defineComponent({
     }
     // 通过类别获取歌单
     async function getSongListOfStyle(style) {
-      allPlayList.value = ((await HttpManager.getSongListOfStyle(style)) as ResponseBody).data;
-      currentPage.value = 1;
+      const param = {style: style, offset: (currentPage.value-1)*pageSize.value, limit: pageSize.value }
+      const resp = ((await HttpManager.getSongListOfStyle(param)) as PaginationResponseBody)
+      allPlayList.value = resp.data;
+      songlistTotalCount.value = resp.count
     }
 
     try {
-      currentPage.value += 1
       getSongList();
     } catch (error) {
       console.error(error);
@@ -66,6 +67,8 @@ export default defineComponent({
     async function handleChangeView(item) {
       activeName.value = item.name;
       allPlayList.value = [];
+      // 重置页码
+      currentPage.value = 1
       try {
         if (item.name === "全部歌单") {
           await getSongList();
@@ -79,7 +82,12 @@ export default defineComponent({
     // 获取当前页
     async function handleCurrentChange(val) {
       currentPage.value = val;
-      await getSongList()
+      if (activeName.value == '全部歌单') {
+        await getSongList()
+      }else {
+        await getSongListOfStyle(activeName.value)
+      }
+      
     }
     return {
       activeName,
