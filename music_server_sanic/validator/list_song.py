@@ -12,4 +12,4 @@ from marshmallow import Schema, validate
 class ListSongSchema(Schema):
     id = fields.Int(dump_only=True)
     songListId = fields.Int(required=True, attribute='song_list_id')
-    song_id = fields.Int()
+    songId = fields.Int(attribute='song_id')

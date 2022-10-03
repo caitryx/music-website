@@ -11,7 +11,8 @@ from sanic.views import HTTPMethodView
 from sanic.response import json
 from webargs_sanic.sanicparser import use_args
 
-from models.song_list import SongList
+from models.song_list import SongList, ListSong
+from models.song import Song
 from utils.response_wrapper import success_wrapper, success_wrapper_pagination
 from validator.base import PaginationSchema
 from validator.song_list import SongListSchema, SongStyleSchema
@@ -22,7 +23,7 @@ bp_song_list = Blueprint('song_list', url_prefix='/songList')
 
 class SongListView(HTTPMethodView):
     """
-        获取歌单列表
+        获取歌单相关的信息
     """
 
     @use_args(PaginationSchema(), location='query')
@@ -48,18 +49,22 @@ class SongListView(HTTPMethodView):
         return json(success_wrapper_pagination(data, count))
 
 
-# class ListSongView(HTTPMethodView):
-#     """
-#         歌单详细信息
-#     """
-#     @use_args(ListSongSchema(), location='query')
-#     async def get(self, request, args):
-#         """
-#             获取歌单中的歌曲列表
-#         :param request:
-#         :return:
-#         """
-#         songs = await ListSong.filter(song_list_id=args['song_list_id'])
-#         return json(success_wrapper(ListSongSchema().dump(songs)))
+class SongListDetail(HTTPMethodView):
+    """
+        获取歌单相关的详细信息
+    """
+    @staticmethod
+    async def songs(request, songlist_id):
+        """
+            获取
+        :param request:
+        :param list_id:
+        :return:
+        """
+        # 先查询歌单对应的歌曲id
+        song_ids = await ListSong.filter(song_list_id=songlist_id).values_list('song_id', flat=True)
+        # 根据歌曲id查询歌曲详情
+        songs = await Song.filter(id__in=song_ids).values('id', 'name', 'introduction', 'lyric', 'url')
+        return json(success_wrapper(songs))
 
 
