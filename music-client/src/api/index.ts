@@ -1,7 +1,7 @@
 /*
  * @Author: Mxu
  * @Date: 2022-09-12 09:52:27
- * @LastEditTime: 2022-10-02 09:53:23
+ * @LastEditTime: 2022-10-03 09:53:26
  * @Description: 
  */
 import { getBaseURL, get, post, deletes, put, patch } from "./request";
@@ -84,6 +84,8 @@ const HttpManager = {
   // =======================> 歌曲 API
   // 返回指定歌曲ID的歌曲
   getSongOfId: (id) => get(`song/detail?id=${id}`),
+  // 返回指定歌单中的歌曲详细信息
+  getSongsByListID: (songListID) => get(`songList/${songListID}/songs`),
   // 返回指定歌手ID的歌曲
   getSongOfSingerId: (id) => get(`song/singer/detail?singerId=${id}`),
   // 返回指定歌手名的歌曲

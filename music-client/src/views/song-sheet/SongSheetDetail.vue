@@ -56,15 +56,10 @@ export default defineComponent({
 
     songListId.value = songDetails.value.id; // 给歌单ID赋值
 
-    // 收集歌单里面的歌曲
-    async function getSongId(id) {
-      const result = (await HttpManager.getListSongOfSongId(id)) as ResponseBody;
-      // 获取歌单里的歌曲信息
-      for (const item of result.data) {
-        // 获取单里的歌曲
-        const resultSong = (await HttpManager.getSongOfId(item.songId)) as ResponseBody;
-        currentSongList.value.push(resultSong.data[0]);
-      }
+    // 收集歌单里面的歌曲信息
+    async function getSongs(id) {
+      const result = (await HttpManager.getSongsByListID(id)) as ResponseBody;
+      currentSongList.value = result.data
     }
     // 获取评分
     async function getRank(id) {
@@ -105,7 +100,7 @@ export default defineComponent({
 
     getUserRank(userId.value, songListId.value);
     getRank(songListId.value); // 获取评分
-    getSongId(songListId.value); // 获取歌单里面的歌曲ID
+    getSongs(songListId.value); // 获取歌单里面的歌曲ID
 
     return {
       songDetails,
