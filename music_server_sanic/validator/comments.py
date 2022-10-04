@@ -13,7 +13,7 @@ from .user import UserDetailSchema
 
 class CommentInfo(Schema):
     id = fields.Int()
-    songListId = fields.Int(attribute='song_list_id')
+    # songListId = fields.Int(attribute='song_list_id')
     type = fields.Int()
     up = fields.Int()
     content = fields.Str()
