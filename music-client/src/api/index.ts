@@ -1,7 +1,7 @@
 /*
  * @Author: Mxu
  * @Date: 2022-09-12 09:52:27
- * @LastEditTime: 2022-10-03 09:53:26
+ * @LastEditTime: 2022-10-04 10:49:47
  * @Description: 
  */
 import { getBaseURL, get, post, deletes, put, patch } from "./request";
@@ -70,12 +70,23 @@ const HttpManager = {
   deleteComment: (id) => get(`comment/delete?id=${id}`),
   // 点赞
   setSupport: (params) => post(`comment/like`, params),
-  // 返回所有评论
+  // 返回所有评论(后期移除)
   getAllComment: (type, id) => {
     let url = "";
     if (type === 1) {
       url = `comment/songList/detail?songListId=${id}`;
     } else if (type === 0) {
+      url = `comment/song/detail?songId=${id}`;
+    }
+    return get(url);
+  },
+  // 返回评论
+  getSongListComment: (type, id) => {
+    let url = "";
+    // type为1时获取歌单评论
+    if (type === 1) {
+      url = `songList/${id}/comments`;
+    } else if (type === 0) {  // type为0时返回歌曲评论
       url = `comment/song/detail?songId=${id}`;
     }
     return get(url);

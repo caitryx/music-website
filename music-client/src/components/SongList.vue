@@ -70,6 +70,7 @@ export default defineComponent({
         item["index"] = index;
         list.push(item);
       });
+      console.log('song:', list)
       return list;
     });
 

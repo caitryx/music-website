@@ -9,10 +9,10 @@
   </div>
   <ul class="popular">
     <li v-for="(item, index) in commentList" :key="index">
-      <el-image class="popular-img" fit="contain" :src="attachImageUrl(item.avator)" />
+      <el-image class="popular-img" fit="contain" :src="attachImageUrl(item.user.avator)" />
       <div class="popular-msg">
         <ul>
-          <li class="name">{{ item.username }}</li>
+          <li class="name">{{ item.user.username }}</li>
           <li class="time">{{ formatDate(item.createTime) }}</li>
           <li class="content">{{ item.content }}</li>
         </ul>
@@ -62,16 +62,24 @@ export default defineComponent({
     });
 
     // 获取所有评论
+    // async function getComment() {
+    //   try {
+    //     const result = (await HttpManager.getAllComment(type.value, playId.value)) as ResponseBody;
+    //     commentList.value = result.data;
+    //     for (let index = 0; index < commentList.value.length; index++) {
+    //       // 获取评论用户的昵称和头像
+    //       const resultUser = (await HttpManager.getUserOfId(commentList.value[index].userId)) as ResponseBody;
+    //       commentList.value[index].avator = resultUser.data[0].avator;
+    //       commentList.value[index].username = resultUser.data[0].username;
+    //     }
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // }
     async function getComment() {
       try {
-        const result = (await HttpManager.getAllComment(type.value, playId.value)) as ResponseBody;
+        const result = (await HttpManager.getSongListComment(type.value, playId.value)) as ResponseBody;
         commentList.value = result.data;
-        for (let index = 0; index < commentList.value.length; index++) {
-          // 获取评论用户的昵称和头像
-          const resultUser = (await HttpManager.getUserOfId(commentList.value[index].userId)) as ResponseBody;
-          commentList.value[index].avator = resultUser.data[0].avator;
-          commentList.value[index].username = resultUser.data[0].username;
-        }
       } catch (error) {
         console.error(error);
       }
