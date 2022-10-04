@@ -8,7 +8,8 @@ description:
 from webargs import fields
 from marshmallow import Schema, validate, EXCLUDE
 
-from .fields import Mobile
+from .fields import Mobile, URLStringField
+from settings.product import ProdSetting
 
 
 class UserInfoSchema(Schema):
@@ -32,7 +33,7 @@ class UserDetailSchema(Schema):
     birth = fields.Date(required=True)
     phoneNum = fields.Str(attribute='phone_num')
     sex = fields.Int()
-    avator = fields.Str(dump_only=True)
+    avator = URLStringField(dump_only=True, metadata={'host': ProdSetting.STATIC_RESOURCE_ADDRESS})
 
     class Meta:
         unknown = EXCLUDE

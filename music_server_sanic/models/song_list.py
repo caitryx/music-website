@@ -7,6 +7,8 @@ description:
 """
 from tortoise import Model, fields
 
+from .song import Comment
+
 
 class SongList(Model):
     id = fields.IntField(pk=True, )
@@ -14,6 +16,9 @@ class SongList(Model):
     pic = fields.CharField(max_length=255, null=True, )
     introduction = fields.TextField(null=True, )
     style = fields.CharField(max_length=10, null=True, default='无', )
+
+    # reverse
+    comments: fields.ReverseRelation['Comment']
 
     class Meta:
         table = "song_list"

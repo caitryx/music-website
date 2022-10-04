@@ -13,9 +13,11 @@ from webargs_sanic.sanicparser import use_args
 
 from models.song_list import SongList, ListSong
 from models.song import Song
-from utils.response_wrapper import success_wrapper, success_wrapper_pagination
+from utils.response_wrapper import success_wrapper, success_wrapper_pagination, warning_wrapper
 from validator.base import PaginationSchema
 from validator.song_list import SongListSchema, SongStyleSchema
+from validator.song import SongInfoSchema
+from validator.comments import CommentInfo
 
 
 bp_song_list = Blueprint('song_list', url_prefix='/songList')
@@ -58,13 +60,28 @@ class SongListDetail(HTTPMethodView):
         """
             获取
         :param request:
-        :param list_id:
+        :param songlist_id:
         :return:
         """
         # 先查询歌单对应的歌曲id
         song_ids = await ListSong.filter(song_list_id=songlist_id).values_list('song_id', flat=True)
         # 根据歌曲id查询歌曲详情
-        songs = await Song.filter(id__in=song_ids).values('id', 'name', 'introduction', 'lyric', 'url')
-        return json(success_wrapper(songs))
+        songs = await Song.filter(id__in=song_ids).values('id', 'name', 'introduction', 'lyric', 'url', 'pic')
+        return json(success_wrapper(SongInfoSchema(many=True).dump(songs)))
+
+    @staticmethod
+    async def comments(request, songlist_id):
+        """
+            查询歌单的评论
+        :param request:
+        :param songlist_id:
+        :return:
+        """
+        song_list = await SongList.get_or_none(id=songlist_id).prefetch_related('comments')
+        if not song_list:
+            return json(warning_wrapper('歌单不存在!'))
+        comments = await song_list.comments.all().prefetch_related('user')
+        data = CommentInfo(many=True).dump(comments)
+        return json(success_wrapper(data))
 
 

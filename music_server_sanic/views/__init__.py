@@ -17,8 +17,8 @@ bp_user.add_route(UserInfoView.as_view(), uri='/')
 # song list路由
 bp_song_list.add_route(SongListView.as_view(), uri='/')
 bp_song_list.add_route(SongListView.style, uri='/style/detail')
-# bp_song_list.add_route(SongListDetail.as_view(), uri='/<songlist_id:int>/')
 bp_song_list.add_route(SongListDetail.songs, uri='/<songlist_id:int>/songs')
+bp_song_list.add_route(SongListDetail.comments, uri='/<songlist_id:int>/comments')
 
 
 # 蓝图组
